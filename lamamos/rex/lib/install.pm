@@ -153,6 +153,8 @@ sub firstPartInstall {
   #we now define the first server as primari (needed for the first synchronisation)
   if($CFG::hostName eq $CFG::config{'firstServHostName'}){
 
+    print("Start configuring pacemaker\n");
+
     Service::pacemaker::property::define({
 
       'name' => 'no-quorum-policy',
