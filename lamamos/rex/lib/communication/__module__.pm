@@ -33,7 +33,7 @@ my $localState = 0;
 
 my $otherServModule = "";
 my $otherServState = 0;
-my $otherServUp = 1;	#we consider that the other serv is awake and running
+my $otherServUp = 0;	#we consider that the other serv is awake and running
 
 #variable that is used for the socket
 my $sock;
@@ -91,7 +91,7 @@ task waitOtherServ => sub {
   sendState($localModule, $localState);
 
   #would be better to use some sort of a signal
-  while( !(($otherServModule eq $localModule,) && ($otherServState == $localState)) ){
+  while( !(($otherServModule eq $localModule) && ($otherServState == $localState)) ){
 
     sleep(1);
   };
