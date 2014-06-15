@@ -68,7 +68,7 @@ sub getHostName {
 
 		#the chomp remove the \n at the end of the line
 		chomp($line);
-        	return $line;
+        return $line;
 	}
 }
 
