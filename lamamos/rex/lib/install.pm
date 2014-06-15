@@ -32,6 +32,8 @@ sub installBaseSysteme {
     writeCfg('/etc/lamamos/lamamos.conf');
 
 
+  if($CFG::hostName eq $CFG::config{'firstServHostName'}){
+
     #put the nodes in standby mode (for reboot)
     print("Standby for the server1\n");
     `crm node standby server1`;
@@ -39,6 +41,11 @@ sub installBaseSysteme {
     `crm node standby server2`;
     print("Maintenance mode activated\n");
     `crm configure property maintenance-mode=true`;
+
+  }
+
+    communication::waitOtherServ('install', 2);
+
 
     #ugly as hell, need to wait for the modifs in pacemaker to take effect
     sleep(10);
