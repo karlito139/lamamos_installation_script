@@ -33,15 +33,21 @@ sub installBaseSysteme {
 
 
     #put the nodes in standby mode (for reboot)
+    print("Standby for the server1\n");
     `crm node standby server1`;
+    print("Standby for the server2\n");
     `crm node standby server2`;
+    print("Maintenance mode activated\n");
     `crm configure property maintenance-mode=true`;
 
     #ugly as hell, need to wait for the modifs in pacemaker to take effect
     sleep(10);
 
+    print("pacemaker stop\n");
     `/etc/init.d/pacemaker stop`;
+    print("corosync stop\n");
     `/etc/init.d/corosync stop`;
+    print("shutdown\n");
 
     `shutdown -r 1`;
 
