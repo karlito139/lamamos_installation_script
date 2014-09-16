@@ -27,21 +27,45 @@ sub installBaseSysteme {
 
     communication::waitOtherServ('install', 1);
 
+    print("Start the first part of the install\n");
+
     firstPartInstall();
+
+    print("Write the the first install is done\n");
+
     $CFG::config{'OCFS2Init'} = "1";
+
+    print("Write the conf file\n");
+
     writeCfg('/etc/lamamos/lamamos.conf');
 
+    print("Put the server1 in standby mode\n");
 
     #put the nodes in standby mode (for reboot)
     `crm node standby server1`;
+
+    print("Put the server2 in standby mode\n");
+
     `crm node standby server2`;
+
+    print("Put the cluster in maintenance mode\n");
+
     `crm configure property maintenance-mode=true`;
+
+    print("Start sleeping\n");
 
     #ugly as hell, need to wait for the modifs in pacemaker to take effect
     sleep(10);
 
+    print("Stop pacemaker\n");
+
     `/etc/init.d/pacemaker stop`;
+    
+    print("Stop corosync\n");
+
     `/etc/init.d/corosync stop`;
+
+    print("Shutdown server\n");
 
     `shutdown -r 1`;
 
