@@ -61,28 +61,38 @@ sub installSystem {
 
 	#We consider the hard drive as zeroed out. It might be a good idea to test the assumbtion here.
 
-	#We insert the first configuration of drbd
-        my $variables = {};
-        $variables->{'drbdSharedSecret'} = $CFG::config{'drbdSharedSecret'};
-        $variables->{'ddName'} = $CFG::config{'ddName'};
-        $variables->{'firstServIP'} = $CFG::config{'firstServIP'};
-        $variables->{'SeconServIP'} = $CFG::config{'SeconServIP'};
-        $variables->{'firstServHostName'} = $CFG::config{'firstServHostName'};
-        $variables->{'SeconServHostName'} = $CFG::config{'SeconServHostName'};
+    print("We are defining the variables\n");
 
-        file "/etc/drbd.conf",
-                content         => template("templates/drbd_install_1.conf.tpl", variables => $variables),
-                owner           => "root",
-                group           => "root",
-                mode            => "640",
-                on_change       => sub{ service "drbd" => "restart"; };
+	#We insert the first configuration of drbd
+    my $variables = {};
+    $variables->{'drbdSharedSecret'} = $CFG::config{'drbdSharedSecret'};
+    $variables->{'ddName'} = $CFG::config{'ddName'};
+    $variables->{'firstServIP'} = $CFG::config{'firstServIP'};
+    $variables->{'SeconServIP'} = $CFG::config{'SeconServIP'};
+    $variables->{'firstServHostName'} = $CFG::config{'firstServHostName'};
+    $variables->{'SeconServHostName'} = $CFG::config{'SeconServHostName'};
+
+    print("We are creating the conf file\n");
+
+    file "/etc/drbd.conf",
+            content         => template("templates/drbd_install_1.conf.tpl", variables => $variables),
+            owner           => "root",
+            group           => "root",
+            mode            => "640",
+            on_change       => sub{ service "drbd" => "restart"; };
+
+    print("We are creating the md r0\n");
 
 	#We now create the r0 drive
 	`drbdadm create-md r0`;
 
+    print("We are restarting drbd\n");
+
 	#We then start drbd in order to synchronise it (we use restart in case the deamon was already running)
 	#!!Certanly useless considering that the fact of changing the config file already restarted the deamon
 	`/etc/init.d/drbd restart`;
+
+    print("We are waiting fot eh other server to connect\n");
 
 	#we wait for the two servers to be connected
 	while(!areTwoServConnected()){
@@ -91,13 +101,17 @@ sub installSystem {
 		sleep(3);
 	}
 
+    print("We are testing if we are the first server\n");
 
 	#we now define the first serveur as primari (needed for the first synchronisation)
 	if($CFG::hostName eq $CFG::config{'firstServHostName'}){
 
+        print("We are defining the first server as reference\n");
+
 		`drbdadm -- --overwrite-data-of-peer primary all`
 	}
 
+    print("We are waiting for the servers to sync\n");
 
 	#we then wait for the two servers to be synchronised 
 	while(!areTwoServSync()){
@@ -106,55 +120,73 @@ sub installSystem {
 		sleep(3);
 	}
 
+    print("We are stoping drbd\n");
+
 	#We stop drbd, in order to configure it and enable dual primarie
 	`/etc/init.d/drbd stop`;
 
-	#we configure drbd (last config)
-        $variables = {};
-        $variables->{'drbdSharedSecret'} = $CFG::config{'drbdSharedSecret'};
-        $variables->{'ddName'} = $CFG::config{'ddName'};
-        $variables->{'firstServIP'} = $CFG::config{'firstServIP'};
-        $variables->{'SeconServIP'} = $CFG::config{'SeconServIP'};
-        $variables->{'firstServHostName'} = $CFG::config{'firstServHostName'};
-        $variables->{'SeconServHostName'} = $CFG::config{'SeconServHostName'};
+    print("We are reconfiguring drbd\n");
 
-        file "/etc/drbd.conf",
-                content         => template("templates/drbd_install_2.conf.tpl", variables => $variables),
-                owner           => "root",
-                group           => "root",
-                mode            => "640";
+	#we configure drbd (last config)
+    $variables = {};
+    $variables->{'drbdSharedSecret'} = $CFG::config{'drbdSharedSecret'};
+    $variables->{'ddName'} = $CFG::config{'ddName'};
+    $variables->{'firstServIP'} = $CFG::config{'firstServIP'};
+    $variables->{'SeconServIP'} = $CFG::config{'SeconServIP'};
+    $variables->{'firstServHostName'} = $CFG::config{'firstServHostName'};
+    $variables->{'SeconServHostName'} = $CFG::config{'SeconServHostName'};
+
+    print("We are saving the new config of drbd\n");
+
+    file "/etc/drbd.conf",
+            content         => template("templates/drbd_install_2.conf.tpl", variables => $variables),
+            owner           => "root",
+            group           => "root",
+            mode            => "640";
+
+    print("We are restarting drbd\n");
 
 	#we restart the drbd deamon
 	`/etc/init.d/drbd restart`;
 
+    print("We install ocfs2\n");
+
 	#we install the soft for OCFS2
 	#install 'ocfs2-tools';
-        install ["ocfs2-tools", "dlm-pcmk", "ocfs2-tools-pacemaker", "openais"];
+    install ["ocfs2-tools", "dlm-pcmk", "ocfs2-tools-pacemaker", "openais"];
 
+    print("We test if we are the first server\n");
 
 	#we format the media in OCFS2. The first server is the one that does it.
-        if($CFG::hostName eq $CFG::config{'firstServHostName'}){
+    if($CFG::hostName eq $CFG::config{'firstServHostName'}){
 
-                `mkfs -t ocfs2 -N 2 -L ocfs2_drbd0 /dev/drbd0`;
-        }
+        print("We make the ocfs2 volume\n");
 
-  communication::waitOtherServ('drbd', 1);
+        `mkfs -t ocfs2 -N 2 -L ocfs2_drbd0 /dev/drbd0`;
+    }
 
-        $variables = {};
-        $variables->{'firstServIP'} = $CFG::config{'firstServIP'};
-        $variables->{'SeconServIP'} = $CFG::config{'SeconServIP'};
-        $variables->{'firstServHostName'} = $CFG::config{'firstServHostName'};
-        $variables->{'SeconServHostName'} = $CFG::config{'SeconServHostName'};
+    communication::waitOtherServ('drbd', 1);
 
-        file "/etc/ocfs2/cluster.conf",
-                content         => template("templates/cluster.conf.tpl", variables => $variables),
-                owner           => "root",
-                group           => "root",
-                mode            => "640";
+    print("We set the last configuration for ocfs2\n");
+
+    $variables = {};
+    $variables->{'firstServIP'} = $CFG::config{'firstServIP'};
+    $variables->{'SeconServIP'} = $CFG::config{'SeconServIP'};
+    $variables->{'firstServHostName'} = $CFG::config{'firstServHostName'};
+    $variables->{'SeconServHostName'} = $CFG::config{'SeconServHostName'};
+
+    print("We save the ocfs2 configuration\n");
+
+    file "/etc/ocfs2/cluster.conf",
+            content         => template("templates/cluster.conf.tpl", variables => $variables),
+            owner           => "root",
+            group           => "root",
+            mode            => "640";
 
 	#finaly we load the kernel modul
 	#`/etc/init.d/o2cb load`;
 
+    print("We quit the install of drbd\n");
 
 	return 1;
 };
