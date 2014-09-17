@@ -26,11 +26,20 @@ task define => sub {
 
   if($CFG::config{'OCFS2Init'} == "0"){
 
+    print("We start to install drbd\n");
+
     installSystem();
+
+    print("We write that drbd is installed\n");
+
     $CFG::config{'OCFS2Init'} = "1";
   }
 
+  print("We install packages\n");
+
   install ["drbd8-utils", "ocfs2-tools"];
+
+  print("We set the configuration of drbd\n");
 
   my $variables = {};
   $variables->{'drbdSharedSecret'} = $CFG::config{'drbdSharedSecret'};
@@ -40,12 +49,16 @@ task define => sub {
   $variables->{'firstServHostName'} = $CFG::config{'firstServHostName'};
   $variables->{'SeconServHostName'} = $CFG::config{'SeconServHostName'};
 
+  print("We write the configuration of drbd\n");
+
   file "/etc/drbd.conf",
     content 	=> template("templates/drbd_install_2.conf.tpl", variables => $variables),
     owner		=> "root",
     group		=> "root",
     mode		=> "640",
     on_change	=> sub{ service "drbd" => "restart"; };
+
+  print("We start drbd\n");
 
   service drbd => ensure => "started";
 
