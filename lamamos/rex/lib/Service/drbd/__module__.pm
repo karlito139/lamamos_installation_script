@@ -60,7 +60,10 @@ task define => sub {
 
   print("We start drbd\n");
 
-  service drbd => ensure => "started";
+  #service drbd => ensure => "started";
+  `/etc/init.d/drbd start`;
+
+  print("We quit drbd\n");
 
 };
 
