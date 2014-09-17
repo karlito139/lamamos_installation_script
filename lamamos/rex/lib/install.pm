@@ -40,15 +40,18 @@ sub installBaseSysteme {
     writeCfg('/etc/lamamos/lamamos.conf');
 
     print("Put the server1 in standby mode\n");
+    communication::waitOtherServ('stop', 1);
 
     #put the nodes in standby mode (for reboot)
     `crm node standby server1`;
 
     print("Put the server2 in standby mode\n");
+    communication::waitOtherServ('stop', 2);
 
     `crm node standby server2`;
 
     print("Put the cluster in maintenance mode\n");
+    communication::waitOtherServ('stop', 3);
 
     `crm configure property maintenance-mode=true`;
 
@@ -58,10 +61,12 @@ sub installBaseSysteme {
     sleep(10);
 
     print("Stop pacemaker\n");
+    communication::waitOtherServ('stop', 4);
 
     `/etc/init.d/pacemaker stop`;
     
     print("Stop corosync\n");
+    communication::waitOtherServ('stop', 5);
 
     `/etc/init.d/corosync stop`;
 
@@ -71,7 +76,7 @@ sub installBaseSysteme {
 
   }elsif($CFG::config{'OCFS2Init'} == "1"){
 
-    communication::waitOtherServ('install', 1);
+    communication::waitOtherServ('install', 2);
 
     secondPartInstall();
     $CFG::config{'OCFS2Init'} = "2";
