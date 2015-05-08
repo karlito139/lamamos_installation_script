@@ -210,8 +210,8 @@ sub installSystem {
 
 sub areTwoServConnected {
 
-	my $status1 = `/etc/init.d/drbd status | tail -1 | awk {'print \$3'} | cut --delimiter="/" -f1 | sed 's\/\\n\$\/\/'`;
-        my $status2 = `/etc/init.d/drbd status | tail -1 | awk {'print \$3'} | cut --delimiter="/" -f2 | sed 's\/\\n\$\/\/'`;
+	my $status1 = `drbd-overview | awk {'print \$3'} | cut --delimiter="/" -f1 | sed 's\/\\n\$\/\/'`;
+    my $status2 = `drbd-overview | awk {'print \$3'} | cut --delimiter="/" -f2 | sed 's\/\\n\$\/\/'`;
 
 	#the sed at the end remove the \n at the end of the string (if there is one) and it adds an \n every times.
 	#That means that status1 and status2 are ended by only one \n, all the time.
@@ -227,8 +227,8 @@ sub areTwoServConnected {
 
 sub areTwoServSync {
 
-        my $status1 = `/etc/init.d/drbd status | tail -1 | awk {'print \$4'} | cut --delimiter="/" -f1 | sed 's\/\\n\$\/\/'`;
-        my $status2 = `/etc/init.d/drbd status | tail -1 | awk {'print \$4'} | cut --delimiter="/" -f2 | sed 's\/\\n\$\/\/'`;
+        my $status1 = `drbd-overview | awk {'print \$4'} | cut --delimiter="/" -f1 | sed 's\/\\n\$\/\/'`;
+        my $status2 = `drbd-overview | awk {'print \$4'} | cut --delimiter="/" -f2 | sed 's\/\\n\$\/\/'`;
 
         #the sed at the end remove the \n at the end of the string (if there is one) and it adds an \n every times.
         #That means that status1 and status2 are ended by only one \n, all the time.
