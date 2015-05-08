@@ -169,7 +169,7 @@ sub installSystem {
 
 	#we install the soft for OCFS2
 	#install 'ocfs2-tools';
-    install ["ocfs2-tools", "libdlm-pcmk", "openais"];
+    install ["ocfs2-tools", "openais"];
 
     print("We test if we are the first server\n");
 
