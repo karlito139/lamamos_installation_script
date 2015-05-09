@@ -132,7 +132,9 @@ sub installSystem {
 	#we then wait for the two servers to be synchronised 
 	while(!areTwoServSync()){
 
-		print("We are waitting for the two servers to synchronise.\n");
+        my $progress = `drbd-overview | grep "sync'ed" | cut -d" " -f 3`;
+
+		print("We are waitting for the two servers to synchronise : ${progress}.\n");
 		sleep(3);
 	}
 
