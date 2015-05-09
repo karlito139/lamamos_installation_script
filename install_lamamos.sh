@@ -248,7 +248,7 @@ then
   cp lamamos.conf lamamos/lamamos.conf
 
   #firstServerIP=`cat lamamos.conf | grep "firstServIP" | cut -d"'" -f4`;
-  firstServerName=`cat /etc/lamamos/lamamos.conf | grep "firstServHostName" | cut -d"'" -f4`;
+  firstServerName=`cat lamamos.conf | grep "firstServHostName" | cut -d"'" -f4`;
   thisServerName=`cat /etc/hostname`
 
   if [ "$firstServerName" = "$thisServerName" ]
