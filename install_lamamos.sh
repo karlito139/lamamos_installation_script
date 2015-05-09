@@ -203,35 +203,64 @@ function validateConfiguration {
   fi
 }
 
+
+function enterConfiguration {
+
+  echo "I am going to ask you a few questions in order to configure lamamos (7 questions)"
+  echo ""
+  echo ""
+
+  isFirstServer=0;
+  echo -n "Are you configurating the first server ? (if you already configured the first server, I can pull the config from it) [y/n] > "
+  read -n 1 -r
+  echo    # (optional) move to a new line
+  if [[ $REPLY =~ ^[Nn]$ ]]
+  then
+    getConfigFromFirstServer;
+    isFirstServer=0;
+  else
+    isFirstServer=1;
+    configNotValidated=1;
+    while [ $configNotValidated -gt 0 ]
+    do
+      configureFirstServer;
+      validateConfiguration;
+      echo -en "\ec"
+    done
+
+    #write the configuration to a file
+    writeConfigToFile;
+  fi
+}
+
+
+
+
+
 echo -en "\ec"
 echo "=== Configuration of lamamos ==="
-echo "I am going to ask you a few questions in order to configure lamamos (7 questions)"
-echo ""
-echo ""
 
-isFirstServer=0;
-echo -n "Are you configurating the first server ? (if you already configured the first server, I can pull the config from it) [y/n] > "
-read -n 1 -r
-echo    # (optional) move to a new line
-if [[ $REPLY =~ ^[Nn]$ ]]
+#if we got a config file already in place
+if [ -e "lamamos.conf" ]
 then
-  getConfigFromFirstServer;
-  isFirstServer=0;
+  #just in case if the file already exists
+  rm lamamos/lamamos.conf
+  cp lamamos.conf lamamos/lamamos.conf
+
+  #firstServerIP=`cat lamamos.conf | grep "firstServIP" | cut -d"'" -f4`;
+  firstServerName=`cat lamamos.conf | grep "firstServHostName" | cut -d"'" -f4`;
+  thisServerName=`cat /etc/hostname`
+
+  if [ "$firstServerName" = "$thisServerName" ]
+  then
+    isFirstServer=1;
+  else
+    isFirstServer=0;
+  fi
+
 else
-  isFirstServer=1;
-  configNotValidated=1;
-  while [ $configNotValidated -gt 0 ]
-  do
-    configureFirstServer;
-    validateConfiguration;
-    echo -en "\ec"
-  done
-
-  #write the configuration to a file
-  writeConfigToFile;
+  enterConfiguration;
 fi
-
-
 
 
 
