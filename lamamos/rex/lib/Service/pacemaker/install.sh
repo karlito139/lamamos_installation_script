@@ -19,6 +19,11 @@ cd ..
 rm -r libqb-0.17.1
 rm v0.17.1.tar.gz
 
+
+
+addgroup --system haclient
+adduser --system --no-create-home --ingroup haclient hacluster
+
 wget https://github.com/ClusterLabs/pacemaker/archive/Pacemaker-1.1.13-rc2.tar.gz
 tar -xvf Pacemaker-1.1.13-rc2.tar.gz
 
