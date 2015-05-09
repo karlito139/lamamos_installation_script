@@ -35,7 +35,7 @@ task define => sub {
 
 	#install "pacemaker";
 	#install pacemaker from source since it is not included in debian 8
-	`bash /etc/lamamos/rex/lib/Service/pacemaker/install.sh`
+	`bash /etc/lamamos/rex/lib/Service/pacemaker/install.sh`;
 
 	file "/etc/corosync/authkey",
 		source => "/etc/lamamos/authkey",
