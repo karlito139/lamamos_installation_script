@@ -268,7 +268,7 @@ fi
 
 getConfigParameter(){
 
-  configParameter=`cat lamamos/lamamos.conf | grep "$1" | sed "s/\W*'$1' => '\(.*\)',/\1/"`;
+  configParameter=`cat lamamos/lamamos.conf | grep "$1" | cut -d"'" -f4`;
 }
 
 
