@@ -1,6 +1,6 @@
 #!/bin/bash
 
-apt-get install -y build-essential automake autoconf libtool pkg-config uuid-dev libglib2.0-dev libxml2-dev libxslt1-dev libbz2-dev libncurses5-dev libcpg-dev libcfg-dev corosync-dev python-lxml cluster-glue cluster-glue-dev libaio-dev libnss3-dev
+apt-get install -y build-essential automake autoconf pkg-config uuid-dev libglib2.0-dev libxml2-dev libxslt1-dev libbz2-dev libncurses5-dev libcpg-dev libcfg-dev corosync-dev python-lxml cluster-glue cluster-glue-dev libaio-dev libnss3-dev
 
 
 
@@ -41,16 +41,34 @@ rm v2.3.4.tar.gz
 
 
 
+
+#lib-ttol
+wget ftp://ftp.gnu.org/pub/gnu/libtool/libtool-2.4.2.tar.xz
+
+tar -xvf libtool-2.4.2.tar.xz
+cd libtool-2.4.2
+./configure
+make -j 2
+make install
+
+cd ..
+rm -r libtool-2.4.2
+rm libtool-2.4.2.tar.xz
+
+
+
+
+
 # Install : cluster-glue
-#wget http://hg.linux-ha.org/glue/archive/glue-1.0.12.tar.bz2
+wget http://hg.linux-ha.org/glue/archive/glue-1.0.11.tar.bz2
 
-#tar -xvf glue-1.0.12.tar.bz2
+tar -xvf glue-1.0.12.tar.bz2
 
-#cd Reusable-Cluster-Components-glue--glue-1.0.12
-#./autogen.sh
-#./configure --enable-fatal-warnings=no
-#make
-#sudo make install
+cd Reusable-Cluster-Components-glue--glue-1.0.12
+./autogen.sh
+./configure --enable-fatal-warnings=no
+make
+sudo make install
 
 
 
