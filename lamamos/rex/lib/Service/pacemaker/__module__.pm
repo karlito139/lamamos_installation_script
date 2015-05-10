@@ -31,7 +31,7 @@ task define => sub {
 	if(!defined $variables->{multicast_address}){die "multicast_address must be defined.";}
 
 	#install [qw/pacemaker corosync/];
-	install "corosync";
+	#install "corosync";
 
 	#install "pacemaker";
 	#install pacemaker from source since it is not included in debian 8
