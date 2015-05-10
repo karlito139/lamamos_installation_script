@@ -98,18 +98,18 @@ rm v3.9.6.tar.gz
 
 
 # Install : PACEMAKER
-wget https://github.com/ClusterLabs/pacemaker/archive/Pacemaker-1.1.13-rc2.tar.gz
-tar -xvf Pacemaker-1.1.13-rc2.tar.gz
+#wget https://github.com/ClusterLabs/pacemaker/archive/Pacemaker-1.1.13-rc2.tar.gz
+#tar -xvf Pacemaker-1.1.13-rc2.tar.gz
 
-cd pacemaker-Pacemaker-1.1.13-rc2
-./autogen.sh
-./configure
-make -j 2
-make install
+#cd pacemaker-Pacemaker-1.1.13-rc2
+#./autogen.sh
+#./configure
+#make -j 2
+#make install
 
-cd ..
-rm -r pacemaker-Pacemaker-1.1.13-rc2
-rm Pacemaker-1.1.13-rc2.tar.gz
+#cd ..
+#rm -r pacemaker-Pacemaker-1.1.13-rc2
+#rm Pacemaker-1.1.13-rc2.tar.gz
 
 
 
