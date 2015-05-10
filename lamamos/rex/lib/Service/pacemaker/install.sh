@@ -2,7 +2,8 @@
 
 apt-get install -y build-essential automake autoconf pkg-config uuid-dev libglib2.0-dev libxml2-dev libxslt1-dev libbz2-dev libncurses5-dev libcpg-dev libcfg-dev corosync-dev python-lxml cluster-glue cluster-glue-dev libaio-dev libnss3-dev groff
 
-
+addgroup --system haclient
+adduser --system --no-create-home --ingroup haclient hacluster
 
 
 
@@ -97,9 +98,6 @@ rm v3.9.6.tar.gz
 
 
 # Install : PACEMAKER
-addgroup --system haclient
-adduser --system --no-create-home --ingroup haclient hacluster
-
 wget https://github.com/ClusterLabs/pacemaker/archive/Pacemaker-1.1.13-rc2.tar.gz
 tar -xvf Pacemaker-1.1.13-rc2.tar.gz
 
