@@ -30,9 +30,10 @@ task define => sub {
 	if(!defined $variables->{bind_address}){die "bind_address must be defined.";}
 	if(!defined $variables->{multicast_address}){die "multicast_address must be defined.";}
 
-	#install [qw/pacemaker corosync/];
 	install "corosync";
-	install "pacemaker";
+	
+	#install "pacemaker";
+	install "crmsh";
 
 	file "/etc/corosync/authkey",
 		source => "/etc/lamamos/authkey",
