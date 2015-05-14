@@ -170,8 +170,8 @@ sub installSystem {
     print("We install ocfs2\n");
 
 	#we install the soft for OCFS2
-	#install 'ocfs2-tools';
-    install ["ocfs2-tools", "dlm-pcmk", "ocfs2-tools-pacemaker", "openais"];
+    #install ["ocfs2-tools", "dlm-pcmk", "ocfs2-tools-pacemaker", "openais"];
+    install ["ocfs2-tools", "openais"];
 
     print("We test if we are the first server\n");
 
