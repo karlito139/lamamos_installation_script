@@ -108,7 +108,7 @@ sub installSystem {
 	#!!Certanly useless considering that the fact of changing the config file already restarted the deamon
 	`/etc/init.d/drbd restart`;
 
-    print("We are waiting fot eh other server to connect\n");
+    print("We are waiting for the other server to connect\n");
 
 	#we wait for the two servers to be connected
 	while(!areTwoServConnected()){
@@ -134,7 +134,7 @@ sub installSystem {
 
         my $progress = `drbd-overview | grep "sync'ed" | cut -d" " -f 3`;
 
-		print("We are waitting for the two servers to synchronise : ${progress}.\n");
+		print("We are waitting for the two servers to synchronise : ${progress}");
 		sleep(3);
 	}
 
