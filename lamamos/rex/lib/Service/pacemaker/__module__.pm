@@ -30,10 +30,12 @@ task define => sub {
 	if(!defined $variables->{bind_address}){die "bind_address must be defined.";}
 	if(!defined $variables->{multicast_address}){die "multicast_address must be defined.";}
 
-	install "corosync";
-	
+	#install [qw/pacemaker corosync/];
+	#install "corosync";
+
 	#install "pacemaker";
-	install "crmsh";
+	#install pacemaker from source since it is not included in debian 8
+	`bash /etc/lamamos/rex/lib/Service/pacemaker/install.sh`;
 
 	file "/etc/corosync/authkey",
 		source => "/etc/lamamos/authkey",
