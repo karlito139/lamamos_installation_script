@@ -1,6 +1,6 @@
 #!/bin/bash
 
-apt-get install -y build-essential automake autoconf pkg-config uuid-dev libglib2.0-dev libxml2-dev libxslt1-dev libbz2-dev libncurses5-dev libcpg-dev libcfg-dev corosync-dev python-lxml cluster-glue cluster-glue-dev libaio-dev libnss3-dev groff
+apt-get install -y build-essential automake autoconf pkg-config uuid-dev libglib2.0-dev libxml2-dev libxslt1-dev libbz2-dev libncurses5-dev libcpg-dev libcfg-dev python-lxml cluster-glue cluster-glue-dev libaio-dev libnss3-dev groff rpm
 
 addgroup --system haclient
 adduser --system --no-create-home --ingroup haclient hacluster
@@ -71,7 +71,9 @@ cd Reusable-Cluster-Components-glue--glue-1.0.12
 make -j 2
 make install
 
-
+cd ..
+rm -r Reusable-Cluster-Components-glue--glue-1.0.12
+rm glue-1.0.12.tar.bz2
 
 
 
@@ -98,18 +100,18 @@ rm v3.9.6.tar.gz
 
 
 # Install : PACEMAKER
-#wget https://github.com/ClusterLabs/pacemaker/archive/Pacemaker-1.1.13-rc2.tar.gz
-#tar -xvf Pacemaker-1.1.13-rc2.tar.gz
+wget https://github.com/ClusterLabs/pacemaker/archive/Pacemaker-1.1.13-rc3.tar.gz
+tar -xvf Pacemaker-1.1.13-rc3.tar.gz
 
-#cd pacemaker-Pacemaker-1.1.13-rc2
-#./autogen.sh
-#./configure
-#make -j 2
-#make install
+cd pacemaker-Pacemaker-1.1.13-rc3
+./autogen.sh
+./configure
+make -j 2
+make install
 
-#cd ..
-#rm -r pacemaker-Pacemaker-1.1.13-rc2
-#rm Pacemaker-1.1.13-rc2.tar.gz
+cd ..
+rm -r pacemaker-Pacemaker-1.1.13-rc2
+rm Pacemaker-1.1.13-rc2.tar.gz
 
 
 
