@@ -17,7 +17,7 @@ cp locale.gen /etc/locale.gen
 echo -en "\ec"
 echo "=====We are going to install git====="
 apt-get update
-apt-get install -y git apache2-utils
+apt-get install -y git
 
 echo -en "\ec"
 echo "===We update the project==="
