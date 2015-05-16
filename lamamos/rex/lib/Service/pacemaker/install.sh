@@ -110,8 +110,8 @@ make -j 2
 make install
 
 cd ..
-rm -r pacemaker-Pacemaker-1.1.13-rc2
-rm Pacemaker-1.1.13-rc2.tar.gz
+rm -r pacemaker-Pacemaker-1.1.13-rc3
+rm Pacemaker-1.1.13-rc3.tar.gz
 
 
 

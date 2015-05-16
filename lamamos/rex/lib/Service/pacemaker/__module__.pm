@@ -48,7 +48,7 @@ task define => sub {
 		content => template("templates/corosync.conf.tpl", variables => $variables),
 		owner => "root",
 		group => "root",
-		mode => "644";
+		mode => "400";
 #		on_change => sub{ service "corosync" => "restart"; };
 
 	mkdir "/etc/corosync/service.d",
@@ -61,17 +61,17 @@ task define => sub {
 		`sed -i s/START=no/START=yes/ /etc/default/corosync`;
 	}
 
-        mkdir "/var/log/cluster",
-                owner   => "root",
-                group   => "root",
-                mode    => 644;
+    mkdir "/var/log/cluster",
+        owner   => "root",
+        group   => "root",
+        mode    => 644;
 
 
 
 	#before launching pacemaker and corosync we stop all the services that they are going to manage
 	`update-rc.d drbd remove`;
-        `update-rc.d ocfs2 remove`;
-        `update-rc.d o2cb remove`;
+    `update-rc.d ocfs2 remove`;
+    `update-rc.d o2cb remove`;
 
 	`/etc/init.d/o2cb stop`;
 
@@ -79,7 +79,7 @@ task define => sub {
 
 	service corosync => ensure => "started";
 
-        #service pacemaker => ensure => "started";
+    #service pacemaker => ensure => "started";
 
 	`/etc/init.d/pacemaker start`;
 

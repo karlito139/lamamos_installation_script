@@ -2,16 +2,16 @@ totem {
 	version: 2
 
 	# How long before declaring a token lost (ms)
-	token: 3000
+	token: 5000
 
 	# How many token retransmits before forming a new configuration
-	token_retransmits_before_loss_const: 10
+	token_retransmits_before_loss_const: 20
 
 	# How long to wait for join messages in the membership protocol (ms)
-	join: 60
+	join: 1000
 
 	# How long to wait for consensus to be achieved before starting a new round of membership configuration (ms)
-	consensus: 3600
+	consensus: 7500
 
 	# Turn off the virtual synchrony filter
 	vsftype: none
@@ -59,16 +59,16 @@ aisexec {
 }
 
 logging {
-        fileline: off
-        to_stderr: yes
-        to_logfile: no
-        to_syslog: yes
+    fileline: off
+    to_stderr: yes
+    to_logfile: no
+    to_syslog: yes
 	syslog_facility: daemon
-        debug: off
-        timestamp: on
-        logger_subsys {
-                subsys: AMF
-                debug: off
-                tags: enter|leave|trace1|trace2|trace3|trace4|trace6
-        }
+    debug: off
+    timestamp: on
+    logger_subsys {
+            subsys: AMF
+            debug: off
+            tags: enter|leave|trace1|trace2|trace3|trace4|trace6
+    }
 }
